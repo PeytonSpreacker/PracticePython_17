@@ -1,21 +1,20 @@
 import requests
 from bs4 import BeautifulSoup
 
-url = 'http://www.nytimes.com'
-r = requests.get(url)
-r_html = r.text
-# print(r_html)
+def PrintHeaders(url):
+	r = requests.get(url)
+	r_html = r.text
 
-soup = BeautifulSoup(r_html, 'html.parser')
+	soup = BeautifulSoup(r_html, 'html.parser')
+	title = soup.find_all("h3")
 
-for titles in soup.find_all(class_="story_wrapper indicate-hover css-18cyl96"):
-	title = titles.a
-	print(title.string)
+	headers = []
 
-# r = requests.get(baseurl)
-# soup = BeautifulSoup(r.text, 'html.parser')
+	for i in range (0,len(title)):
+		if title[i] not in headers:
+			headers.append(title[i].get_text())
 
-# posts = soup.select('section:not(section[data-testid="block-Briefings"]) article')
+	for i in headers:
+		print(i + "\n")
 
-# for i, post in enumerate(posts, 1):
-#     print('{: <4}{}'.format(str(i) + '.', post.find('h2').text))
+PrintHeaders(input("Enter the URL here: "))
